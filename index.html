@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AR Food Menu</title>
+
+<!-- DO NOT CHANGE -->
+<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:'Inter',sans-serif;
+  background:#0b0b0c;
+  color:white;
+}
+
+/* ---------- Top Info ---------- */
+#info{
+  position:absolute;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:10px 18px;
+  background:rgba(20,20,22,.85);
+  border-radius:14px;
+  font-size:16px;
+  font-weight:600;
+  z-index:5;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  position:absolute;
+  bottom:20px;
+  padding:12px 18px;
+  background:rgba(30,30,32,.9);
+  border:1px solid rgba(255,255,255,.12);
+  color:white;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+#left{ left:16px; }
+#right{ right:16px; }
+
+/* Side-by-side center buttons */
+#rate{
+  left:50%;
+  transform:translateX(-110%);
+}
+#addCart{
+  left:50%;
+  transform:translateX(10%);
+}
+
+/* ---------- Rating ---------- */
+#ratingMenu{
+  position:absolute;
+  bottom:78px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:10px 16px;
+  background:rgba(20,20,22,.92);
+  border-radius:16px;
+  display:none;
+  z-index:5;
+}
+
+.star{
+  font-size:28px;
+  cursor:pointer;
+  color:rgba(255,255,255,.25);
+}
+.star.active{ color:#FFD54F; }
+
+/* ---------- Toast ---------- */
+#toast{
+  position:absolute;
+  top:72px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#1f7aff;
+  padding:8px 14px;
+  border-radius:12px;
+  font-size:14px;
+  opacity:0;
+  transition:opacity .3s;
+  z-index:6;
+}
+
+/* ---------- Loading ---------- */
+#loading{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#0b0b0c;
+  z-index:10;
+  font-size:18px;
+  font-weight:600;
+}
+
+/* ---------- Cart ---------- */
+#cart{
+  position:absolute;
+  right:16px;
+  top:90px;
+  width:240px;
+  background:rgba(20,20,22,.95);
+  border-radius:16px;
+  padding:12px;
+  font-size:14px;
+  display:none;
+  z-index:6;
+}
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+
+#cartTotal{
+  margin-top:10px;
+  font-weight:600;
+}
+
+#clearCart{
+  margin-top:8px;
+  width:100%;
+  padding:6px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d4d;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+a-scene{ pointer-events:none; }
+#info,#toast,.btn,#ratingMenu,.star,#cart{ pointer-events:auto; }
+</style>
+</head>
+
+<body>
+
+<div id="info"></div>
+<div id="toast"></div>
+<div id="loading">Loading model…</div>
+
+<button id="left" class="btn">◀</button>
+<button id="rate" class="btn">Rate</button>
+<button id="addCart" class="btn">Add to Cart</button>
+<button id="right" class="btn">▶</button>
+
+<div id="ratingMenu">
+  <span class="star" data-s="1">★</span>
+  <span class="star" data-s="2">★</span>
+  <span class="star" data-s="3">★</span>
+  <span class="star" data-s="4">★</span>
+  <span class="star" data-s="5">★</span>
+</div>
+
+<div id="cart">
+  <h3>🧾 Your Cart</h3>
+  <div id="cartItems"></div>
+  <div id="cartTotal">Total: ₹0</div>
+  <button id="clearCart">Clear Cart</button>
+</div>
+
+<a-scene embedded vr-mode-ui="enabled:false"
+         arjs="sourceType:webcam; debugUIEnabled:false;">
+  <a-entity light="type:ambient;intensity:0.8"></a-entity>
+  <a-entity light="type:directional;intensity:0.4" position="1 2 1"></a-entity>
+  <a-entity camera></a-entity>
+  <a-entity id="holder" position="0 0 -4"></a-entity>
+</a-scene>
+
+<script>
+const foods=[
+ {model:"models/burger/scene.gltf",name:"Burger",price:"₹149",scale:.4},
+ {model:"models/pizza/scene.gltf",name:"Pizza",price:"₹299",scale:2},
+ {model:"models/fries/scene.gltf",name:"Fries",price:"₹99",scale:.5},
+ {model:"models/samosa/scene.gltf",name:"Samosa",price:"₹39",scale:.5}
+];
+
+const holder=document.getElementById("holder");
+const info=document.getElementById("info");
+const loading=document.getElementById("loading");
+const toast=document.getElementById("toast");
+
+const cartBtn=document.getElementById("addCart");
+const cartBox=document.getElementById("cart");
+const cartItemsDiv=document.getElementById("cartItems");
+const cartTotalDiv=document.getElementById("cartTotal");
+const clearCartBtn=document.getElementById("clearCart");
+
+let index=0,rating=0;
+let yaw=0,pitch=0,scale=foods[0].scale;
+let autoRotate=true;
+let dragging=false,lx=0,ly=0;
+let cart=[];
+
+const model=document.createElement("a-entity");
+holder.appendChild(model);
+
+/* ---------- Helpers ---------- */
+function showToast(t){
+ toast.textContent=t;
+ toast.style.opacity=1;
+ setTimeout(()=>toast.style.opacity=0,1200);
+}
+
+function renderCart(){
+ cartItemsDiv.innerHTML="";
+ let total=0;
+ cart.forEach((item,i)=>{
+  total+=item.price*item.qty;
+  const div=document.createElement("div");
+  div.className="cart-item";
+  div.innerHTML=`${item.name} x${item.qty} <span onclick="removeItem(${i})">❌</span>`;
+  cartItemsDiv.appendChild(div);
+ });
+ cartTotalDiv.textContent=`Total: ₹${total}`;
+}
+function removeItem(i){
+ cart.splice(i,1);
+ renderCart();
+}
+
+/* ---------- Load ---------- */
+function loadFood(i){
+ loading.style.display="flex";
+ model.setAttribute("gltf-model",foods[i].model);
+ scale=foods[i].scale;
+ model.object3D.scale.set(scale,scale,scale);
+ yaw=pitch=0;
+ info.textContent=`${foods[i].name} • ${foods[i].price}`;
+}
+model.addEventListener("model-loaded",()=>loading.style.display="none");
+loadFood(0);
+
+/* ---------- UI ---------- */
+left.onclick=()=>{ index=(index+foods.length-1)%foods.length; loadFood(index); }
+right.onclick=()=>{ index=(index+1)%foods.length; loadFood(index); }
+
+rate.onclick=()=>{
+ ratingMenu.style.display =
+ ratingMenu.style.display==="block"?"none":"block";
+};
+
+cartBtn.onclick=()=>{
+ const item=foods[index];
+ const price=parseInt(item.price.replace("₹",""));
+ const found=cart.find(c=>c.name===item.name);
+ found ? found.qty++ : cart.push({name:item.name,price,qty:1});
+ cartBox.style.display="block";
+ renderCart();
+ showToast("Added to cart");
+};
+
+clearCartBtn.onclick=()=>{
+ cart=[];
+ renderCart();
+ showToast("Cart cleared");
+};
+
+/* ---------- Mouse Rotation + Zoom ---------- */
+document.addEventListener("mousedown",e=>{
+ dragging=true;
+ lx=e.clientX; ly=e.clientY;
+ autoRotate=false;
+});
+document.addEventListener("mousemove",e=>{
+ if(!dragging) return;
+ yaw+=(e.clientX-lx)*0.01;
+ pitch+=(e.clientY-ly)*0.01;
+ pitch=Math.max(-1.4,Math.min(1.4,pitch));
+ lx=e.clientX; ly=e.clientY;
+ model.object3D.rotation.set(pitch,yaw,0);
+});
+document.addEventListener("mouseup",()=>{
+ dragging=false;
+ setTimeout(()=>autoRotate=true,2000);
+});
+document.addEventListener("wheel",e=>{
+ scale+=e.deltaY*-0.001;
+ scale=Math.max(.2,2.5,scale);
+ model.object3D.scale.set(scale,scale,scale);
+});
+
+/* ---------- Auto Rotate ---------- */
+AFRAME.registerComponent("spin",{tick:()=>{
+ if(autoRotate){
+  yaw+=0.002;
+  model.object3D.rotation.y=yaw;
+ }
+}});
+model.setAttribute("spin","");
+</script>
+
+</body>
+</html>
