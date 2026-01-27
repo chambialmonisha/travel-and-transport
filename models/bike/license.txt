@@ -1,0 +1,11 @@
+Model Information:
+* title:	Kawasaki Ninja ZX-10R
+* source:	https://sketchfab.com/3d-models/kawasaki-ninja-zx-10r-4f121416591b41a6b60e2026551d0e88
+* author:	Nieve5677 (https://sketchfab.com/niev)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Kawasaki Ninja ZX-10R" (https://sketchfab.com/3d-models/kawasaki-ninja-zx-10r-4f121416591b41a6b60e2026551d0e88) by Nieve5677 (https://sketchfab.com/niev) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
