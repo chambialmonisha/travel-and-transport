@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>AR Food Menu</title>
+<title>AR Models</title>
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@ body{
   background:linear-gradient(180deg, rgba(0,0,0,.6) 0%, transparent 100%);
   z-index:5;
   display:flex;
-  justify-content:space-between;
+  justify-content:flex-start;
   align-items:center;
 }
 
@@ -35,50 +35,6 @@ body{
   font-size:18px;
   font-weight:700;
   letter-spacing:-0.5px;
-}
-
-#topActions{
-  display:flex;
-  gap:8px;
-}
-
-.top-btn{
-  width:40px;
-  height:40px;
-  background:rgba(30,30,32,.85);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:50%;
-  color:white;
-  font-size:18px;
-  cursor:pointer;
-  transition:all .15s;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-}
-
-.top-btn:active{
-  transform:scale(.95);
-  background:rgba(50,50,55,.9);
-}
-
-#viewCart{
-  position:relative;
-}
-
-#cartBadge{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  background:#ff3b30;
-  color:white;
-  border-radius:10px;
-  padding:2px 6px;
-  font-size:11px;
-  font-weight:700;
-  min-width:18px;
-  text-align:center;
 }
 
 /* ---------- Info Card ---------- */
@@ -96,6 +52,7 @@ body{
   border:1px solid rgba(255,255,255,.08);
   z-index:5;
   box-shadow:0 8px 24px rgba(0,0,0,.3);
+  text-align:center;
 }
 
 #foodName{
@@ -111,62 +68,7 @@ body{
   margin-bottom:6px;
 }
 
-#foodStats{
-  display:flex;
-  gap:10px;
-  font-size:11px;
-  color:rgba(255,255,255,.5);
-  margin-top:6px;
-  padding-top:8px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-
-.stat{
-  display:flex;
-  align-items:center;
-  gap:4px;
-}
-
-/* ---------- Quick Actions ---------- */
-#quickActions{
-  position:absolute;
-  left:20px;
-  top:50%;
-  transform:translateY(-50%);
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  z-index:5;
-}
-
-.quick-btn{
-  width:48px;
-  height:48px;
-  background:rgba(30,30,32,.88);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:50%;
-  color:white;
-  font-size:20px;
-  cursor:pointer;
-  transition:all .15s;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  backdrop-filter:blur(10px);
-}
-
-.quick-btn:active{
-  transform:scale(.95);
-  background:rgba(50,50,55,.9);
-}
-
-.quick-btn.active{
-  background:rgba(31,122,255,.85);
-  border-color:rgba(31,122,255,.3);
-  box-shadow:0 4px 16px rgba(31,122,255,.3);
-}
-
-/* ---------- Main Controls ---------- */
+/* ---------- Main Controls (only navigation) ---------- */
 #controls{
   position:absolute;
   bottom:0;
@@ -175,6 +77,8 @@ body{
   padding:20px;
   background:linear-gradient(0deg, rgba(0,0,0,.7) 0%, transparent 100%);
   z-index:5;
+  display:flex;
+  justify-content:center;
 }
 
 #navButtons{
@@ -203,328 +107,6 @@ body{
 .nav-btn:active{
   transform:scale(.94);
   background:rgba(50,50,55,.95);
-}
-
-#addCart{
-  flex:1;
-  max-width:200px;
-  background:linear-gradient(135deg, #1f7aff 0%, #0066ff 100%);
-  border-color:rgba(31,122,255,.3);
-  font-weight:700;
-  font-size:16px;
-  box-shadow:0 4px 20px rgba(31,122,255,.4);
-  border-radius:16px;
-  height:56px;
-}
-
-/* ---------- FAB ---------- */
-.fab {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 1px;
-  height: 1px;
-  background: linear-gradient(135deg, #1f7aff 0%, #0066ff 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 100;
-  box-shadow: 0 4px 12px rgba(31, 122, 255, 0.4);
-  transition: all 0.3s;
-}
-
-.fab.active {
-  background: #ff3b30;
-}
-
-.fab.active .fab-icon::before {
-  content: "✕";
-}
-
-.fab-menu {
-  position: fixed;
-  bottom: 96px;
-  right: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 99;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.fab-menu.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.fab-menu-item {
-  width: 48px;
-  height: 48px;
-  background: rgba(40, 40, 45, 0.85);
-  border-radius: 50%;
-  color: white;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s;
-}
-
-.fab-menu-item:active {
-  transform: scale(0.9);
-  background: rgba(60, 60, 65, 0.95);
-}
-
-/* ---------- Filter Menu ---------- */
-#filterMenu{
-  position:absolute;
-  top:80px;
-  left:20px;
-  right:20px;
-  background:rgba(20,20,22,.95);
-  backdrop-filter:blur(20px);
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.1);
-  padding:20px;
-  display:none;
-  z-index:100;
-  box-shadow:0 8px 32px rgba(0,0,0,.4);
-}
-
-#filterMenu.show{
-  display:block;
-}
-
-.filter-section{
-  margin-bottom:20px;
-}
-
-.filter-section:last-child{
-  margin-bottom:0;
-}
-
-.filter-title{
-  font-size:14px;
-  font-weight:700;
-  margin-bottom:10px;
-  color:rgba(255,255,255,.7);
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-}
-
-.filter-options{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.filter-chip{
-  padding:8px 14px;
-  background:rgba(40,40,45,.6);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;
-  color:white;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  transition:all .15s;
-}
-
-.filter-chip:active{
-  transform:scale(.95);
-}
-
-.filter-chip.active{
-  background:rgba(31,122,255,.8);
-  border-color:rgba(31,122,255,.3);
-}
-
-/* ---------- Cart Modal ---------- */
-#cartModal{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  backdrop-filter:blur(10px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:100;
-}
-
-#cartContent{
-  background:rgba(20,20,22,.98);
-  border-radius:24px;
-  padding:28px 24px;
-  width:90%;
-  max-width:420px;
-  max-height:80vh;
-  overflow-y:auto;
-  border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
-}
-
-#cartHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-#cartHeader h2{
-  margin:0;
-  font-size:24px;
-  font-weight:700;
-}
-
-.cart-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px;
-  background:rgba(40,40,45,.6);
-  border-radius:14px;
-  margin-bottom:12px;
-  border:1px solid rgba(255,255,255,.05);
-}
-
-.cart-item-info{
-  flex:1;
-}
-
-.cart-item-name{
-  font-weight:600;
-  font-size:15px;
-  margin-bottom:4px;
-}
-
-.cart-item-price{
-  color:rgba(255,255,255,.5);
-  font-size:13px;
-}
-
-.cart-item-controls{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.qty-btn{
-  width:32px;
-  height:32px;
-  border-radius:10px;
-  background:rgba(60,60,65,.8);
-  border:1px solid rgba(255,255,255,.1);
-  color:white;
-  font-size:18px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:all .15s;
-  font-weight:600;
-}
-
-.qty-btn:active{
-  background:rgba(80,80,85,.9);
-  transform:scale(.9);
-}
-
-.qty{
-  font-weight:700;
-  min-width:28px;
-  text-align:center;
-  font-size:16px;
-}
-
-#cartTotal{
-  margin-top:20px;
-  padding-top:20px;
-  border-top:1px solid rgba(255,255,255,.1);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-size:20px;
-  font-weight:700;
-}
-
-#totalPrice{
-  color:#4CAF50;
-}
-
-.cart-actions{
-  display:flex;
-  gap:12px;
-  margin-top:20px;
-}
-
-.cart-actions button{
-  flex:1;
-  padding:14px;
-  border-radius:14px;
-  border:none;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
-  transition:all .15s;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-}
-
-.cart-actions button:active{
-  transform:scale(.96);
-}
-
-#closeCart{
-  background:rgba(60,60,65,.8);
-  color:white;
-  border:1px solid rgba(255,255,255,.1);
-}
-
-#checkout{
-  background:linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  color:white;
-  box-shadow:0 4px 20px rgba(76,175,80,.4);
-}
-
-#checkout:disabled{
-  background:rgba(60,60,65,.5);
-  cursor:not-allowed;
-  box-shadow:none;
-}
-
-#emptyCart{
-  text-align:center;
-  padding:40px 20px;
-  color:rgba(255,255,255,.4);
-  font-size:15px;
-}
-
-/* ---------- Toast ---------- */
-#toast{
-  position:absolute;
-  top:90px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(31,122,255,.95);
-  backdrop-filter:blur(20px);
-  padding:12px 18px;
-  border-radius:12px;
-  font-size:14px;
-  font-weight:600;
-  opacity:0;
-  transition:opacity .3s;
-  z-index:101;
-  box-shadow:0 4px 20px rgba(31,122,255,.4);
 }
 
 /* ---------- Loading ---------- */
@@ -560,76 +142,33 @@ body{
   transition:width .3s;
 }
 
-/* ---------- Rating ---------- */
-#ratingMenu{
+/* ---------- Toast ---------- */
+#toast{
   position:absolute;
-  bottom:200px;
+  top:90px;
   left:50%;
   transform:translateX(-50%);
-  padding:12px 18px;
-  background:rgba(20,20,22,.95);
+  background:rgba(31,122,255,.95);
   backdrop-filter:blur(20px);
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.1);
-  display:none;
-  z-index:5;
-  align-items:center;
-  gap:6px;
-  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  padding:12px 18px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  opacity:0;
+  transition:opacity .3s;
+  z-index:101;
+  box-shadow:0 4px 20px rgba(31,122,255,.4);
 }
 
-#ratingMenu.show{
-  display:flex;
-}
+a-scene { pointer-events: none; }
 
-.star{
-  font-size:32px;
-  cursor:pointer;
-  color:rgba(255,255,255,.2);
-  transition:all .2s;
-  line-height:1;
-}
-.star.active{
-  color:#FFD54F;
-  text-shadow:0 0 12px rgba(255,213,79,.5);
-}
-.star:active{ transform:scale(1.3); }
-
-a-scene {
-  pointer-events: none;
-}
-
+/* Allow UI elements to receive pointer events */
 #topBar,
 #infoCard,
 #toast,
 #controls,
-#quickActions,
-#actionBar,
-.nav-btn,
-.action-btn,
-.quick-btn,
-.top-btn,
-#ratingMenu,
-.star,
-#cartModal,
-#filterMenu,
-.fab,
-.fab-menu {
+.nav-btn {
   pointer-events: auto;
-}
-
-/* Scrollbar for cart */
-#cartContent::-webkit-scrollbar{
-  width:6px;
-}
-
-#cartContent::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-#cartContent::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.2);
-  border-radius:3px;
 }
 </style>
 </head>
@@ -638,47 +177,13 @@ a-scene {
 
 <!-- Top Bar -->
 <div id="topBar">
-  <div id="logo">🍔 FoodAR</div>
-  <div id="topActions">
-    <button class="top-btn" id="filterBtn">🔍</button>
-    <button class="top-btn" id="viewCart">
-      🛒
-      <span id="cartBadge" style="display:none;">0</span>
-    </button>
-  </div>
+  <div id="logo">🚗 TransportAR</div>
 </div>
 
 <!-- Info Card -->
 <div id="infoCard">
   <div id="foodName"></div>
   <div id="foodPrice"></div>
-  <div id="foodStats">
-    <span class="stat">👁️ <span id="viewCount">0</span> views</span>
-    <span class="stat">⭐ <span id="avgRating">0.0</span></span>
-    <span class="stat">🛒 <span id="orderCount">0</span> orders</span>
-  </div>
-</div>
-
-<!-- Filter Menu -->
-<div id="filterMenu">
-  <div class="filter-section">
-    <div class="filter-title">Price Range</div>
-    <div class="filter-options">
-      <button class="filter-chip active" data-filter="all">All</button>
-      <button class="filter-chip" data-filter="budget">Under ₹50</button>
-      <button class="filter-chip" data-filter="mid">₹50-₹150</button>
-      <button class="filter-chip" data-filter="premium">₹150+</button>
-    </div>
-  </div>
-  <div class="filter-section">
-    <div class="filter-title">Category</div>
-    <div class="filter-options">
-      <button class="filter-chip active" data-category="all">All</button>
-      <button class="filter-chip" data-category="indian">Indian</button>
-      <button class="filter-chip" data-category="western">Western</button>
-      <button class="filter-chip" data-category="healthy">Healthy</button>
-    </div>
-  </div>
 </div>
 
 <div id="toast"></div>
@@ -689,35 +194,13 @@ a-scene {
   </div>
 </div>
 
-<!-- Quick Actions -->
-<div id="quickActions">
-  <button class="quick-btn" id="resetBtn">🔄</button>
-  <button class="quick-btn active" id="toggleRotate">↻</button>
-  <button class="quick-btn" id="shareBtn">📤</button>
-</div>
-
-<!-- Main Controls -->
+<!-- Main Controls (only navigation) -->
 <div id="controls">
   <div id="navButtons">
     <button class="nav-btn" id="left">‹</button>
-    
     <button class="nav-btn" id="right">›</button>
   </div>
 </div>
-
-
-
-
-<!-- Rating -->
-<div id="ratingMenu">
-  <span class="star" data-s="1">★</span>
-  <span class="star" data-s="2">★</span>
-  <span class="star" data-s="3">★</span>
-  <span class="star" data-s="4">★</span>
-  <span class="star" data-s="5">★</span>
-</div>
-
-
 
 <a-scene embedded vr-mode-ui="enabled:false"
          arjs="sourceType:webcam; debugUIEnabled:false;">
@@ -728,6 +211,8 @@ a-scene {
 </a-scene>
 
 <script>
+const THREE = AFRAME ? AFRAME.THREE : window.THREE;
+
 const foods=[
  {model:"models/bike/scene.gltf",name:"Bike",price:149,scale:.4,category:"western",views:1250,rating:4.5,orders:342},
  {model:"models/bus/scene.gltf",name:"Bus",price:299,scale:2,category:"western",views:2100,rating:4.8,orders:521},
@@ -743,35 +228,13 @@ const holder=document.getElementById("holder");
 const infoCard=document.getElementById("infoCard");
 const foodName=document.getElementById("foodName");
 const foodPrice=document.getElementById("foodPrice");
-const viewCount=document.getElementById("viewCount");
-const avgRating=document.getElementById("avgRating");
-const orderCount=document.getElementById("orderCount");
 const loading=document.getElementById("loading");
 const loadingText=document.getElementById("loadingText");
 const loadingProgress=document.getElementById("loadingProgress");
 const toast=document.getElementById("toast");
-const cartModal=document.getElementById("cartModal");
-const cartItems=document.getElementById("cartItems");
-const cartBadge=document.getElementById("cartBadge");
-const totalPrice=document.getElementById("totalPrice");
-const emptyCart=document.getElementById("emptyCart");
-const cartTotal=document.getElementById("cartTotal");
-const itemCount=document.getElementById("itemCount");
-const filterMenu=document.getElementById("filterMenu");
-const fab = document.getElementById("fab");
-const fabMenu = document.getElementById("fabMenu");
-const ratingMenu = document.getElementById("ratingMenu");
 
-let index=0, rating=0;
-let yaw=0,pitch=0,scale=foods[0].scale;
+let index=0;
 let autoRotate=true;
-let cart=[];
-let favorites=[];
-let compareList=[];
-let currentFilter="all";
-let currentCategory="all";
-let fabTimeout;
-
 const models=[];
 let loadedCount=0;
 
@@ -779,89 +242,59 @@ let loadedCount=0;
 function showToast(t){
  toast.textContent=t;
  toast.style.opacity=1;
- setTimeout(()=>toast.style.opacity=0,1800);
+ setTimeout(()=>toast.style.opacity=0,1200);
 }
 
-function updateStars(){
- document.querySelectorAll(".star").forEach(s=>{
-  s.classList.toggle("active",s.dataset.s<=rating);
- });
-}
-
-function updateCartBadge(){
- const totalItems=cart.reduce((sum,item)=>sum+item.qty,0);
- if(totalItems>0){
-  cartBadge.textContent=totalItems;
-  cartBadge.style.display="block";
- }else{
-  cartBadge.style.display="none";
- }
-}
-
-function updateCartDisplay(){
- const checkoutBtn=document.getElementById("checkout");
-
- if(cart.length===0){
-  cartItems.innerHTML="";
-  emptyCart.style.display="block";
-  cartTotal.style.display="none";
-  checkoutBtn.disabled=true;
-  itemCount.textContent="";
-  return;
- }
-
- const totalItems=cart.reduce((sum,item)=>sum+item.qty,0);
- itemCount.textContent=`${totalItems} item${totalItems>1?'s':''}`;
-
- emptyCart.style.display="none";
- cartTotal.style.display="flex";
- checkoutBtn.disabled=false;
-
- cartItems.innerHTML=cart.map((item,idx)=>`<div class="cart-item">
-   <div class="cart-item-info">
-    <div class="cart-item-name">${item.name}</div>
-    <div class="cart-item-price">₹${item.price} each</div>
-   </div>
-   <div class="cart-item-controls">
-    <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
-    <span class="qty">${item.qty}</span>
-    <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
-   </div>
-  </div>`).join("");
-
- const total=cart.reduce((sum,item)=>sum+(item.price*item.qty),0);
- totalPrice.textContent=`₹${total}`;
-}
-
-function changeQty(idx,delta){
- if(!cart[idx]) return;
- cart[idx].qty+=delta;
- if(cart[idx].qty<=0){
-  cart.splice(idx,1);
- }
- updateCartBadge();
- updateCartDisplay();
-}
-
-function updateRotateBtn(){
- const btn=document.getElementById("toggleRotate");
- if(autoRotate){
-  btn.classList.add("active");
- }else{
-  btn.classList.remove("active");
- }
-}
-
-/* ---------- Preload all models ---------- */
+/* ---------- Preload all models + center & normalize scale ---------- */
 foods.forEach((food,i)=>{
  const m=document.createElement("a-entity");
  m.setAttribute("gltf-model",food.model);
+ // initial approximate scale; final normalized scale set after model loads
  m.object3D.scale.set(food.scale,food.scale,food.scale);
  m.object3D.visible=false;
  holder.appendChild(m);
  models.push(m);
 
  m.addEventListener("model-loaded",()=>{
+  const Box3 = THREE.Box3;
+  const Vector3 = THREE.Vector3;
+
+  // compute bbox
+  const bbox = new Box3().setFromObject(m.object3D);
+  const size = bbox.getSize(new Vector3());
+  const center = bbox.getCenter(new Vector3());
+
+  // Recenter: translate so center is at origin (x,z) and lowest Y sits at y=0
+  m.object3D.position.x -= center.x;
+  m.object3D.position.z -= center.z;
+  m.object3D.position.y -= bbox.min.y;
+
+  // Normalize scale to keep large models from overflowing the view
+  const targetHeight = 1.6; // desired display height in scene units (meters)
+  let currentScale = (food.scale && food.scale > 0) ? food.scale : 1;
+  const modelHeight = size.y * currentScale;
+
+  if (modelHeight === 0 || isNaN(modelHeight)) {
+    m.userData.normalizedScale = currentScale;
+  } else if (modelHeight > targetHeight) {
+    const scaleFactor = targetHeight / modelHeight;
+    currentScale = currentScale * scaleFactor;
+    m.object3D.scale.set(currentScale, currentScale, currentScale);
+    m.userData.normalizedScale = currentScale;
+  } else {
+    m.userData.normalizedScale = currentScale;
+    m.object3D.scale.set(currentScale, currentScale, currentScale);
+  }
+
+  // optional: enable shadows on meshes
+  m.object3D.traverse(node => {
+    if (node.isMesh) {
+      node.castShadow = true;
+      node.receiveShadow = true;
+    }
+  });
+
+  // Loading UI
   loadedCount++;
   const progress=(loadedCount/foods.length)*100;
   loadingProgress.style.width=progress+"%";
@@ -869,294 +302,34 @@ foods.forEach((food,i)=>{
   if(loadedCount===foods.length){
    setTimeout(()=>{
     loading.style.display="none";
-    showFood(0);
-    showToast("Welcome to FoodAR! 👋");
+    showModel(0);
+    showToast("Models loaded");
    },300);
   }
  });
 });
 
-/* ---------- Show ---------- */
-function showFood(i){
- models.forEach((m,idx)=>{
-  m.object3D.visible=(idx===i);
- });
- scale=foods[i].scale;
- models[i].object3D.scale.set(scale,scale,scale);
- yaw=pitch=0;
- models[i].object3D.rotation.set(0,0,0);
+/* ---------- Show model ---------- */
+function showModel(i){
+ models.forEach((m,idx)=> m.object3D.visible=(idx===i) );
+ const m = models[i];
+ const normalized = (m && m.userData && m.userData.normalizedScale) ? m.userData.normalizedScale : foods[i].scale;
+ if (m) m.object3D.scale.set(normalized, normalized, normalized);
+ if (m) m.object3D.rotation.set(0,0,0);
 
- const food=foods[i];
- foodName.textContent=food.name;
- foodPrice.textContent=`₹${food.price}`;
- viewCount.textContent=food.views;
- avgRating.textContent=food.rating.toFixed(1);
- orderCount.textContent=food.orders;
-
- rating=0;
- updateStars();
- autoRotate=true;
- updateRotateBtn();
+ foodName.textContent = foods[i].name;
+ foodPrice.textContent = `₹${foods[i].price}`;
 }
 
-function resetView(){
- if(!models[index]) return;
- scale=foods[index].scale;
- models[index].object3D.scale.set(scale,scale,scale);
- yaw=pitch=0;
- models[index].object3D.rotation.set(0,0,0);
- autoRotate=true;
- updateRotateBtn();
- showToast("View reset 🔄");
-}
-
-function toggleAutoRotate(){
- autoRotate=!autoRotate;
- updateRotateBtn();
- showToast(autoRotate?"Auto-rotate ON ↻":"Auto-rotate OFF");
-}
-
-/* ---------- UI ---------- */
-document.getElementById("left").onclick=()=>{  index=(index+foods.length-1)%foods.length;  showFood(index); };
-document.getElementById("right").onclick=()=>{ index=(index+1)%foods.length; showFood(index); };
-document.getElementById("resetBtn").onclick=resetView;
-document.getElementById("toggleRotate").onclick=toggleAutoRotate;
-
-document.getElementById("shareBtn").onclick=()=>{
- const food=foods[index];
- showToast(`Sharing ${food.name}... 📤`);
+/* ---------- UI: only navigation ---------- */
+document.getElementById("left").onclick=()=>{
+  index=(index+foods.length-1)%foods.length;
+  showModel(index);
 };
-
-document.getElementById("filterBtn").onclick=()=>{
- filterMenu.classList.toggle("show");
+document.getElementById("right").onclick=()=>{
+  index=(index+1)%foods.length;
+  showModel(index);
 };
-
-document.getElementById("viewCart").onclick=()=>{
- updateCartDisplay();
- cartModal.style.display="flex";
-};
-
-document.getElementById("closeCart").onclick=()=>{
- cartModal.style.display="none";
-};
-
-document.getElementById("checkout").onclick=()=>{
- if(cart.length===0){
-  showToast("Cart is empty!");
-  return;
- }
- const total=cart.reduce((sum,item)=>sum+(item.price*item.qty),0);
- showToast(`Order placed: ₹${total} ✅`);
- cart=[];
- updateCartBadge();
- updateCartDisplay();
- setTimeout(()=>{
-  cartModal.style.display="none";
- },1000);
-};
-
-document.getElementById("addCart").onclick=()=>{
- const food=foods[index];
- const existing=cart.find(item=>item.name===food.name);
-
- if(existing){
-  existing.qty++;
- }else{
-  cart.push({name:food.name,price:food.price,qty:1});
- }
-
- updateCartBadge();
- showToast(`${food.name} added to cart! 🛒`);
-};
-
-cartModal.onclick=(e)=>{
- if(e.target===cartModal){
-  cartModal.style.display="none";
- }
-};
-
-document.querySelectorAll('[data-filter]').forEach(chip=>{
- chip.onclick=()=>{
-  document.querySelectorAll('[data-filter]').forEach(c=>c.classList.remove('active'));
-  chip.classList.add('active');
-  currentFilter=chip.dataset.filter;
-  showToast(`Filter: ${chip.textContent}`);
- };
-});
-
-document.querySelectorAll('[data-category]').forEach(chip=>{
- chip.onclick=()=>{
-  document.querySelectorAll('[data-category]').forEach(c=>c.classList.remove('active'));
-  chip.classList.add('active');
-  currentCategory=chip.dataset.category;
-  showToast(`Category: ${chip.textContent}`);
- };
-});
-
-fab.addEventListener("click", (e) => {
-  e.stopPropagation();
-  if (fabMenu.classList.contains("show")) {
-    fabMenu.classList.remove("show");
-    fab.classList.remove("active");
-  } else {
-    fabMenu.classList.add("show");
-    fab.classList.add("active");
-    clearTimeout(fabTimeout);
-    fabTimeout = setTimeout(() => {
-      fabMenu.classList.remove("show");
-      fab.classList.remove("active");
-    }, 3000);
-  }
-});
-
-fabMenu.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-document.addEventListener("click", () => {
-  fabMenu.classList.remove("show");
-  fab.classList.remove("active");
-});
-
-document.getElementById("favoriteFab").onclick=()=>{
- const foodName=foods[index].name;
- const idx=favorites.indexOf(foodName);
- if(idx>-1){
-  favorites.splice(idx,1);
-  showToast("Removed from favorites");
- }else{
-  favorites.push(foodName);
-  showToast("Added to favorites ❤️");
- }
-};
-
-document.getElementById("rateFab").onclick=()=>{
- ratingMenu.classList.add("show");
-};
-
-document.getElementById("compareFab").onclick=()=>{
- const foodName=foods[index].name;
- const idx=compareList.indexOf(foodName);
- if(idx>-1){
-  compareList.splice(idx,1);
-  showToast("Removed from comparison");
- }else{
-  if(compareList.length>=3){
-   showToast("Max 3 items for comparison");
-   return;
-  }
-  compareList.push(foodName);
-  showToast(`Added to compare (${compareList.length}/3)`);
- }
-};
-
-document.querySelectorAll(".star").forEach(s=>{
- s.onclick=()=>{
-  const currentRating=parseInt(s.dataset.s);
-  rating=currentRating;
-  updateStars();
-  showToast(`Rated ${rating} ★`);
-  setTimeout(()=>{
-   ratingMenu.classList.remove("show");
-  },1200);
- };
-});
-
-/* ---------- Input (Touch + Mouse) ---------- */
-let dragging=false,lx=0,ly=0,zoom=0;
-
-function dist(a,b){
- const dx=a.clientX-b.clientX;
- const dy=a.clientY-b.clientY;
- return Math.sqrt(dx*dx+dy*dy);
-}
-
-function start(x,y,e){
- if(e && e.target && (
-  e.target.classList.contains('nav-btn') ||
-  e.target.classList.contains('action-btn') ||
-  e.target.classList.contains('quick-btn') ||
-  e.target.classList.contains('top-btn') ||
-  e.target.classList.contains('star') ||
-  e.target.id==='viewCart' ||
-  e.target.closest('#cartModal') ||
-  e.target.closest('#filterMenu') ||
-  e.target.closest('#fab') ||
-  e.target.closest('#fabMenu')
- )) return;
-
- dragging=true; lx=x; ly=y; autoRotate=false;
- updateRotateBtn();
-}
-
-function move(x,y){
- if(!models[index]) return;
- yaw+=(x-lx)*0.01;
- pitch+=(y-ly)*0.01;
- pitch=Math.max(-1.4,Math.min(1.4,pitch));
- lx=x; ly=y;
- models[index].object3D.rotation.set(pitch,yaw,0);
-}
-
-function end(){
- dragging=false;
- setTimeout(()=>{
-  autoRotate=true;
-  updateRotateBtn();
- },2000);
-}
-
-document.addEventListener("touchstart",e=>{
- if(e.touches.length===1) start(e.touches[0].clientX,e.touches[0].clientY,e);
- if(e.touches.length===2) zoom=dist(e.touches[0],e.touches[1]);
-});
-
-document.addEventListener("touchmove",e=>{
- if(e.touches.length===2){
-  const d=dist(e.touches[0],e.touches[1]);
-  if(models[index]){
-   scale*=d/zoom;
-   models[index].object3D.scale.set(scale,scale,scale);
-  }
-  zoom=d;
- }
- if(dragging && e.touches.length===1)
-  move(e.touches[0].clientX,e.touches[0].clientY);
-});
-
-document.addEventListener("touchend",end);
-
-document.addEventListener("mousedown",e=>start(e.clientX,e.clientY,e));
-document.addEventListener("mousemove",e=>dragging&&move(e.clientX,e.clientY));
-document.addEventListener("mouseup",end);
-
-document.addEventListener("wheel",e=>{
- if(e.target.classList.contains('nav-btn') ||
-    e.target.classList.contains('action-btn') ||
-    e.target.classList.contains('quick-btn') ||
-    e.target.classList.contains('top-btn') ||
-    e.target.id==='viewCart' ||
-    e.target.closest('#cartModal') ||
-    e.target.closest('#filterMenu') ||
-    e.target.closest('#fab') ||
-    e.target.closest('#fabMenu')) return;
-
- if(!models[index]) return;
-
- scale+=e.deltaY*-0.001;
- models[index].object3D.scale.set(scale,scale,scale);
-});
-
-AFRAME.registerComponent("spin",{
- tick:function(){
-  if(autoRotate && models[index]){
-   yaw+=0.002;
-   models[index].object3D.rotation.y=yaw;
-  }
- }
-});
-holder.setAttribute("spin","");
 </script>
-
 </body>
 </html>
