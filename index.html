@@ -700,20 +700,13 @@ a-scene {
 <div id="controls">
   <div id="navButtons">
     <button class="nav-btn" id="left">‹</button>
-    <button class="nav-btn" id="addCart">Add to Cart</button>
+    
     <button class="nav-btn" id="right">›</button>
   </div>
 </div>
 
-<!-- FAB -->
-<div id="fab" class="fab">
-  <div class="fab-icon">🛒</div>
-</div>
-<div id="fabMenu" class="fab-menu">
-  <button class="fab-menu-item" id="favoriteFab">❤️</button>
-  <button class="fab-menu-item" id="rateFab">⭐</button>
-  <button class="fab-menu-item" id="compareFab">⚖️</button>
-</div>
+
+
 
 <!-- Rating -->
 <div id="ratingMenu">
@@ -724,25 +717,7 @@ a-scene {
   <span class="star" data-s="5">★</span>
 </div>
 
-<!-- Cart Modal -->
-<div id="cartModal">
-  <div id="cartContent">
-    <div id="cartHeader">
-      <h2>Your Cart</h2>
-      <span id="itemCount" style="color:rgba(255,255,255,.5);font-size:14px;"></span>
-    </div>
-    <div id="cartItems"></div>
-    <div id="emptyCart" style="display:none;">Your cart is empty 🛒</div>
-    <div id="cartTotal" style="display:none;">
-      <span>Total:</span>
-      <span id="totalPrice">₹0</span>
-    </div>
-    <div class="cart-actions">
-      <button id="closeCart">Close</button>
-      <button id="checkout">Checkout</button>
-    </div>
-  </div>
-</div>
+
 
 <a-scene embedded vr-mode-ui="enabled:false"
          arjs="sourceType:webcam; debugUIEnabled:false;">
