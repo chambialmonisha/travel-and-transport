@@ -1,172 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <title>TransportAR</title>
 
+<!-- A-Frame & AR.js libraries -->
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
 <style>
-*{ box-sizing:border-box; }
+  * { box-sizing: border-box; }
 
-body{
-  margin:0;
-  overflow:hidden;
-  font-family:'Inter',sans-serif;
-  background:#0b0b0c;
-  color:white;
-}
+  body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    background: #0b0b0c;
+    color: white;
+  }
 
-/* ---------- Top Bar ---------- */
-#topBar{
-  position:absolute;
-  top:0; left:0; right:0;
-  padding:12px 20px;
-  background:linear-gradient(180deg, rgba(0,0,0,.7), transparent);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  z-index:10;
-}
+  /* ---------- Top Bar ---------- */
+  #topBar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,.7), transparent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
 
-#logo{
-  font-size:18px;
-  font-weight:700;
-}
+  #logo {
+    font-size: 18px;
+    font-weight: 700;
+  }
 
-/* ---------- Info Card ---------- */
-#infoCard{
-  position:absolute;
-  top:70px;
-  left:50%;
-  transform:translateX(-50%);
-  width:90%;
-  max-width:320px;
-  padding:14px 16px;
-  background:rgba(20,20,22,.95);
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.08);
-  z-index:10;
-}
+  /* ---------- Info Card ---------- */
+  #infoCard {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 320px;
+    padding: 14px 16px;
+    background: rgba(20,20,22,.95);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.08);
+    z-index: 10;
+  }
 
-#vehicleName{
-  font-size:18px;
-  font-weight:700;
-}
+  #vehicleName {
+    font-size: 18px;
+    font-weight: 700;
+  }
 
-#vehicleType{
-  font-size:13px;
-  opacity:.7;
-  margin-top:4px;
-}
+  #vehicleType {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
 
-#vehicleStats{
-  display:flex;
-  justify-content:space-between;
-  margin-top:10px;
-  font-size:12px;
-  opacity:.7;
-}
+  #vehicleStats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.7;
+  }
 
-/* ---------- Controls ---------- */
-#controls{
-  position:absolute;
-  bottom:20px;
-  left:0; right:0;
-  display:flex;
-  justify-content:center;
-  gap:16px;
-  z-index:10;
-}
+  /* ---------- Controls ---------- */
+  #controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    z-index: 10;
+  }
 
-.control-btn{
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.15);
-  background:rgba(30,30,32,.9);
-  color:white;
-  font-size:24px;
-  cursor:pointer;
-}
+  .control-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(30,30,32,.9);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
 
-/* ---------- Side Actions ---------- */
-#sideActions{
-  position:absolute;
-  left:16px;
-  top:50%;
-  transform:translateY(-50%);
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  z-index:10;
-}
+  /* ---------- Side Actions ---------- */
+  #sideActions {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10;
+  }
 
-.side-btn{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.15);
-  background:rgba(30,30,32,.9);
-  color:white;
-  font-size:20px;
-  cursor:pointer;
-}
+  .side-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(30,30,32,.9);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
 
-/* ---------- Loading ---------- */
-#loading{
-  position:absolute;
-  inset:0;
-  background:#0b0b0c;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  z-index:20;
-}
+  /* ---------- Loading ---------- */
+  #loading {
+    position: absolute;
+    inset: 0;
+    background: #0b0b0c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+  }
 
-#loadingText{
-  font-size:18px;
-  margin-bottom:12px;
-}
+  #loadingText {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
 
-#loadingBar{
-  width:200px;
-  height:4px;
-  background:rgba(255,255,255,.1);
-  overflow:hidden;
-  border-radius:4px;
-}
+  #loadingBar {
+    width: 200px;
+    height: 4px;
+    background: rgba(255,255,255,.1);
+    overflow: hidden;
+    border-radius: 4px;
+  }
 
-#loadingProgress{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#1f7aff,#0066ff);
-}
+  #loadingProgress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#1f7aff,#0066ff);
+  }
 
-/* ---------- Toast ---------- */
-#toast{
-  position:absolute;
-  top:90px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#1f7aff;
-  padding:10px 16px;
-  border-radius:12px;
-  font-size:14px;
-  opacity:0;
-  transition:.3s;
-  z-index:30;
-}
+  /* ---------- Toast ---------- */
+  #toast {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f7aff;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    opacity: 0;
+    transition: .3s;
+    z-index: 30;
+  }
 
-a-scene{ pointer-events:none; }
-#topBar,#infoCard,#controls,#sideActions,#toast{ pointer-events:auto; }
+  /* Disable pointer events on scene to avoid conflicts, but allow on UI elements */
+  a-scene { pointer-events: none; }
+  #topBar, #infoCard, #controls, #sideActions, #toast { pointer-events: auto; }
 </style>
 </head>
-
 <body>
 
 <!-- Top Bar -->
@@ -186,17 +188,17 @@ a-scene{ pointer-events:none; }
 
 <!-- Side Actions -->
 <div id="sideActions">
-  <button class="side-btn" id="resetBtn">🔄</button>
-  <button class="side-btn" id="rotateBtn">↻</button>
+  <button class="side-btn" id="resetBtn" title="Reset View">🔄</button>
+  <button class="side-btn" id="rotateBtn" title="Toggle Auto-Rotate">↻</button>
 </div>
 
 <!-- Bottom Controls -->
 <div id="controls">
-  <button class="control-btn" id="prevBtn">‹</button>
-  <button class="control-btn" id="nextBtn">›</button>
+  <button class="control-btn" id="prevBtn" title="Previous Vehicle">‹</button>
+  <button class="control-btn" id="nextBtn" title="Next Vehicle">›</button>
 </div>
 
-<!-- Loading -->
+<!-- Loading Overlay -->
 <div id="loading">
   <div id="loadingText">Loading vehicle models…</div>
   <div id="loadingBar">
@@ -204,6 +206,7 @@ a-scene{ pointer-events:none; }
   </div>
 </div>
 
+<!-- Toast Notification -->
 <div id="toast"></div>
 
 <!-- AR Scene -->
@@ -216,16 +219,16 @@ a-scene{ pointer-events:none; }
 </a-scene>
 
 <script>
-/* ---------- VEHICLE DATA ---------- */
+/* ---------- Data for Vehicles ---------- */
 const vehicles = [
- { model:"models/ike/scene.gltf", name:"Bike", scale:0.4, type:"Road Transport", views:1250, rating:4.5 },
- { model:"models/bus/scene.gltf", name:"Bus", scale:2, type:"Public Transport", views:2100, rating:4.8 },
- { model:"models/car/scene.gltf", name:"Car", scale:0.5, type:"Road Transport", views:890, rating:4.2 },
- { model:"models/cruise_ship/scene.gltf", name:"Cruise Ship", scale:6, type:"Water Transport", views:456, rating:4.3 },
- { model:"models/helicopter/scene.gltf", name:"Helicopter", scale:6, type:"Air Transport", views:1567, rating:4.7 },
- { model:"models/metro/scene.gltf", name:"Metro", scale:6, type:"Rail Transport", views:678, rating:4.1 },
- { model:"models/plane/scene.gltf", name:"Plane", scale:6, type:"Air Transport", views:1123, rating:4.6 },
- { model:"models/submarine/scene.gltf", name:"Submarine", scale:0.01, type:"Water Transport", views:345, rating:4.0 }
+  { model:"models/bike/scene.gltf", name:"Bike", scale:0.4, type:"Road Transport", views:1250, rating:4.5 },
+  { model:"models/bus/scene.gltf", name:"Bus", scale:2, type:"Public Transport", views:2100, rating:4.8 },
+  { model:"models/car/scene.gltf", name:"Car", scale:0.5, type:"Road Transport", views:890, rating:4.2 },
+  { model:"models/cruise_ship/scene.gltf", name:"Cruise Ship", scale:6, type:"Water Transport", views:456, rating:4.3 },
+  { model:"models/helicopter/scene.gltf", name:"Helicopter", scale:6, type:"Air Transport", views:1567, rating:4.7 },
+  { model:"models/metro/scene.gltf", name:"Metro", scale:6, type:"Rail Transport", views:678, rating:4.1 },
+  { model:"models/plane/scene.gltf", name:"Plane", scale:6, type:"Air Transport", views:1123, rating:4.6 },
+  { model:"models/submarine/scene.gltf", name:"Submarine", scale:0.01, type:"Water Transport", views:345, rating:4.0 }
 ];
 
 const holder = document.getElementById("holder");
@@ -236,98 +239,103 @@ const toast = document.getElementById("toast");
 let models = [];
 let index = 0;
 let yaw = 0;
-let scale = 1;
 let autoRotate = true;
 
-/* ---------- Toast ---------- */
-function showToast(t){
- toast.textContent = t;
- toast.style.opacity = 1;
- setTimeout(()=>toast.style.opacity=0,1800);
+/* ---------- Utility: Show Toast ---------- */
+function showToast(message) {
+  toast.textContent = message;
+  toast.style.opacity = 1;
+  setTimeout(() => toast.style.opacity = 0, 1800);
 }
 
 /* ---------- Load Models ---------- */
-let loaded = 0;
-vehicles.forEach((v,i)=>{
- const m = document.createElement("a-entity");
- m.setAttribute("gltf-model", v.model);
- m.object3D.visible = false;
- holder.appendChild(m);
- models.push(m);
+let loadedCount = 0;
+vehicles.forEach((vehicle, i) => {
+  const entity = document.createElement("a-entity");
+  entity.setAttribute("gltf-model", vehicle.model);
+  entity.object3D.visible = false; // hide until loaded
+  holder.appendChild(entity);
+  models.push(entity);
 
- m.addEventListener("model-loaded",()=>{
-  loaded++;
-  loadingProgress.style.width = (loaded/vehicles.length)*100 + "%";
-  if(loaded === vehicles.length){
-    loading.style.display = "none";
-    showVehicle(0);
-    showToast("Welcome to TransportAR 🚀");
-  }
- });
+  entity.addEventListener("model-loaded", () => {
+    console.log(`Loaded: ${vehicle.name}`);
+    loadedCount++;
+    loadingProgress.style.width = (loadedCount / vehicles.length) * 100 + "%";
+
+    if (loadedCount === vehicles.length) {
+      // All loaded
+      loading.style.display = "none";
+      showVehicle(0);
+      showToast("Welcome to TransportAR 🚀");
+    }
+  });
 });
 
 /* ---------- Show Vehicle ---------- */
-function showVehicle(i){
- models.forEach((m,idx)=> m.object3D.visible = idx===i);
+function showVehicle(i) {
+  models.forEach((m, idx) => m.object3D.visible = (idx === i));
+  const v = vehicles[i];
+  scale = v.scale;
+  yaw = 0;
 
- const v = vehicles[i];
- scale = v.scale;
- yaw = 0;
-
- models[i].object3D.scale.set(scale,scale,scale);
- models[i].object3D.rotation.set(0,0,0);
-
- document.getElementById("vehicleName").textContent = v.name;
- document.getElementById("vehicleType").textContent = v.type;
- document.getElementById("viewCount").textContent = v.views;
- document.getElementById("avgRating").textContent = v.rating.toFixed(1);
+  models[i].object3D.scale.set(scale, scale, scale);
+  models[i].object3D.rotation.set(0, 0, 0);
+  document.getElementById("vehicleName").textContent = v.name;
+  document.getElementById("vehicleType").textContent = v.type;
+  document.getElementById("viewCount").textContent = v.views;
+  document.getElementById("avgRating").textContent = v.rating.toFixed(1);
 }
 
 /* ---------- Controls ---------- */
-document.getElementById("prevBtn").onclick = ()=>{
- index = (index + vehicles.length - 1) % vehicles.length;
- showVehicle(index);
+document.getElementById("prevBtn").onclick = () => {
+  index = (index - 1 + vehicles.length) % vehicles.length;
+  showVehicle(index);
 };
 
-document.getElementById("nextBtn").onclick = ()=>{
- index = (index + 1) % vehicles.length;
- showVehicle(index);
+document.getElementById("nextBtn").onclick = () => {
+  index = (index + 1) % vehicles.length;
+  showVehicle(index);
 };
 
-document.getElementById("resetBtn").onclick = ()=>{
- showVehicle(index);
- showToast("View reset 🔄");
+document.getElementById("resetBtn").onclick = () => {
+  showVehicle(index);
+  showToast("View reset 🔄");
 };
 
-document.getElementById("rotateBtn").onclick = ()=>{
- autoRotate = !autoRotate;
- showToast(autoRotate ? "Auto rotate ON" : "Auto rotate OFF");
+document.getElementById("rotateBtn").onclick = () => {
+  autoRotate = !autoRotate;
+  showToast(autoRotate ? "Auto rotate ON" : "Auto rotate OFF");
 };
 
-/* ---------- Interaction ---------- */
-let dragging=false, lx=0;
+/* ---------- Interaction: Drag to Rotate ---------- */
+let dragging = false, lastX = 0;
 
-document.addEventListener("mousedown",e=>{
- dragging=true; lx=e.clientX; autoRotate=false;
+document.addEventListener("mousedown", (e) => {
+  dragging = true;
+  lastX = e.clientX;
+  autoRotate = false; // stop auto-rotation when dragging
 });
-document.addEventListener("mousemove",e=>{
- if(!dragging) return;
- yaw += (e.clientX - lx)*0.01;
- lx = e.clientX;
- models[index].object3D.rotation.y = yaw;
+document.addEventListener("mousemove", (e) => {
+  if (!dragging) return;
+  const deltaX = e.clientX - lastX;
+  yaw += deltaX * 0.01;
+  lastX = e.clientX;
+  models[index].object3D.rotation.y = yaw;
 });
-document.addEventListener("mouseup",()=> dragging=false);
+document.addEventListener("mouseup", () => {
+  dragging = false;
+});
 
-/* ---------- Auto Rotate ---------- */
-AFRAME.registerComponent("spin",{
- tick:function(){
-  if(autoRotate && models[index]){
-    yaw += 0.002;
-    models[index].object3D.rotation.y = yaw;
+/* ---------- Auto Rotate Component ---------- */
+AFRAME.registerComponent("spin", {
+  tick: function () {
+    if (autoRotate && models[index]) {
+      yaw += 0.002;
+      models[index].object3D.rotation.y = yaw;
+    }
   }
- }
 });
-holder.setAttribute("spin","");
+holder.setAttribute("spin", "");
 </script>
 
 </body>
