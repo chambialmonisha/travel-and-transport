@@ -219,13 +219,27 @@
 </a-scene>
 
 <script>
-/* ---------- Data for Vehicles ---------- */
+/* ---------- Data for Vehicles ----------
+   Make sure each object has: model, name, scale, type, views, rating
+   Replace the model URLs below with the actual paths to your .gltf/.glb files.
+*/
 const vehicles = [
-  
- 
-  { model:"https://raw.githubusercontent.com/chambialmonisha/travel-and-transport/e9e68e8a889fa78d63279741d1d9fe93d5454faf/models/car/scene.gltf", name:"Car", scale:0.5, type:"Road Transport", views:890, rating:4.2 },
-  
- 
+  {
+    model: "https://raw.githubusercontent.com/chambialmonisha/travel-and-transport/e9e68e8a889fa78d63279741d1d9fe93d5454faf/models/car/scene.gltf",
+    name: "Car",
+    scale: 0.5,
+    type: "Road Transport",
+    views: 8,
+    rating: 4.3
+  },
+  {
+    model: "https://raw.githubusercontent.com/chambialmonisha/travel-and-transport/e9e68e8a889fa78d63279741d1d9fe93d5454faf/models/bus/scene.gltf",
+    name: "Bus",
+    scale: 0.6,
+    type: "Road Transport",
+    views: 12,
+    rating: 4.6
+  }
 ];
 
 const holder = document.getElementById("holder");
@@ -247,40 +261,95 @@ function showToast(message) {
 
 /* ---------- Load Models ---------- */
 let loadedCount = 0;
-vehicles.forEach((vehicle, i) => {
-  const entity = document.createElement("a-entity");
-  entity.setAttribute("gltf-model", vehicle.model);
-  entity.object3D.visible = false; // hide until loaded
-  holder.appendChild(entity);
-  models.push(entity);
+let errorCount = 0;
 
-  entity.addEventListener("model-loaded", () => {
-    console.log(`Loaded: ${vehicle.name}`);
-    loadedCount++;
-    loadingProgress.style.width = (loadedCount / vehicles.length) * 100 + "%";
+if (!vehicles || vehicles.length === 0) {
+  // Nothing to load - hide loader and inform user
+  loading.style.display = "none";
+  showToast("No vehicle models configured.");
+} else {
+  vehicles.forEach((vehicle, i) => {
+    const entity = document.createElement("a-entity");
+    // Use the URL form so A-Frame knows it's a remote model
+    entity.setAttribute("gltf-model", `url(${vehicle.model})`);
+    // Give a default position/rotation/scale so it's visible in scene
+    entity.setAttribute("position", "0 0 0");
+    entity.setAttribute("rotation", "0 0 0");
+    // hide until loaded
+    entity.object3D.visible = false;
+    holder.appendChild(entity);
+    models.push(entity);
 
-    if (loadedCount === vehicles.length) {
-      // All loaded
-      loading.style.display = "none";
-      showVehicle(0);
-      showToast("Welcome to TransportAR 🚀");
-    }
+    // model-loaded
+    entity.addEventListener("model-loaded", () => {
+      console.log(`Loaded: ${vehicle.name}`);
+      // apply the configured scale now that model exists
+      const scale = vehicle.scale || 1;
+      try {
+        entity.object3D.scale.set(scale, scale, scale);
+      } catch (e) {
+        // fallback: set attribute
+        entity.setAttribute("scale", `${scale} ${scale} ${scale}`);
+      }
+      loadedCount++;
+      loadingProgress.style.width = ((loadedCount + errorCount) / vehicles.length) * 100 + "%";
+
+      if (loadedCount + errorCount === vehicles.length) {
+        loading.style.display = "none";
+        // show first available (use first loaded model)
+        const firstIndex = models.findIndex(m => m && m.object3D && m.object3D.visible !== undefined);
+        showVehicle(index);
+        showToast("Welcome to TransportAR 🚀");
+      }
+    });
+
+    // model-error: handle gracefully
+    entity.addEventListener("model-error", (evt) => {
+      console.error(`Error loading model ${vehicle.model}`, evt);
+      errorCount++;
+      loadingProgress.style.width = ((loadedCount + errorCount) / vehicles.length) * 100 + "%";
+      showToast(`Failed to load ${vehicle.name}`);
+      // if everything attempted, hide loader
+      if (loadedCount + errorCount === vehicles.length) {
+        loading.style.display = "none";
+      }
+    });
   });
-});
+}
 
 /* ---------- Show Vehicle ---------- */
 function showVehicle(i) {
-  models.forEach((m, idx) => m.object3D.visible = (idx === i));
-  const v = vehicles[i];
-  scale = v.scale;
+  if (!models || models.length === 0) {
+    return;
+  }
+
+  // clamp index
+  index = ((i % vehicles.length) + vehicles.length) % vehicles.length;
+
+  models.forEach((m, idx) => {
+    if (!m) return;
+    m.object3D.visible = (idx === index);
+  });
+
+  const v = vehicles[index];
+  const scale = v.scale || 1;
   yaw = 0;
 
-  models[i].object3D.scale.set(scale, scale, scale);
-  models[i].object3D.rotation.set(0, 0, 0);
-  document.getElementById("vehicleName").textContent = v.name;
-  document.getElementById("vehicleType").textContent = v.type;
-  document.getElementById("viewCount").textContent = v.views;
-  document.getElementById("avgRating").textContent = v.rating.toFixed(1);
+  const m = models[index];
+  if (m && m.object3D) {
+    try {
+      m.object3D.scale.set(scale, scale, scale);
+      m.object3D.rotation.set(0, 0, 0);
+    } catch (e) {
+      m.setAttribute("scale", `${scale} ${scale} ${scale}`);
+      m.setAttribute("rotation", "0 0 0");
+    }
+  }
+
+  document.getElementById("vehicleName").textContent = v.name || "";
+  document.getElementById("vehicleType").textContent = v.type || "";
+  document.getElementById("viewCount").textContent = v.views != null ? v.views : 0;
+  document.getElementById("avgRating").textContent = (v.rating != null) ? v.rating.toFixed(1) : "0.0";
 }
 
 /* ---------- Controls ---------- */
@@ -317,7 +386,9 @@ document.addEventListener("mousemove", (e) => {
   const deltaX = e.clientX - lastX;
   yaw += deltaX * 0.01;
   lastX = e.clientX;
-  models[index].object3D.rotation.y = yaw;
+  if (models[index] && models[index].object3D) {
+    models[index].object3D.rotation.y = yaw;
+  }
 });
 document.addEventListener("mouseup", () => {
   dragging = false;
@@ -326,7 +397,7 @@ document.addEventListener("mouseup", () => {
 /* ---------- Auto Rotate Component ---------- */
 AFRAME.registerComponent("spin", {
   tick: function () {
-    if (autoRotate && models[index]) {
+    if (autoRotate && models[index] && models[index].object3D) {
       yaw += 0.002;
       models[index].object3D.rotation.y = yaw;
     }
